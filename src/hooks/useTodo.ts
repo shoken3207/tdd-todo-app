@@ -4,7 +4,7 @@ import { IndexSchema } from "../schemas/CommonSchema";
 
 type Todos = FullTodo[];
 
-type UseTodo = () => {
+export type UseTodo = () => {
   todos: Todos;
   add: (inputTodo: InputTodo) => void;
   complete: (index: number) => void;
@@ -13,13 +13,13 @@ type UseTodo = () => {
 };
 
 export const useTodo: UseTodo = () => {
-  // const todos: Todos = [];
   const [todos, setTodos] = useState<Todos>([]);
   const add = (inputTodo: InputTodo) => {
     try {
       InputTodoSchema.parse(inputTodo);
       const newTodo = {
         ...inputTodo,
+        dueDate: new Date(inputTodo.dueDate),
         id: crypto.randomUUID(),
         isCompleted: false,
         createdAt: new Date(),
@@ -33,7 +33,9 @@ export const useTodo: UseTodo = () => {
   const complete = (index: number) => {
     try {
       IndexSchema.parse(index);
-      todos[index].isCompleted = true;
+      const copyTodos = [...todos];
+      copyTodos[index].isCompleted = true;
+      setTodos(copyTodos);
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +43,9 @@ export const useTodo: UseTodo = () => {
   const unComplete = (index: number) => {
     try {
       IndexSchema.parse(index);
-      todos[index].isCompleted = false;
+      const copyTodos = [...todos];
+      copyTodos[index].isCompleted = false;
+      setTodos(copyTodos);
     } catch (err) {
       console.error(err);
     }
@@ -49,7 +53,9 @@ export const useTodo: UseTodo = () => {
   const remove = (index: number) => {
     try {
       IndexSchema.parse(index);
-      todos.splice(index, 1);
+      const copyTodos = [...todos];
+      copyTodos.splice(index, 1);
+      setTodos(copyTodos);
     } catch (err) {
       console.error(err);
     }

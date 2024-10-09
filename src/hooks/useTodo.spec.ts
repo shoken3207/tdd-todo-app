@@ -12,7 +12,7 @@ const addTodoAndVerify = ({ addArgs }: { addArgs: InputTodo }) => {
   });
   expect(result.current.todos).toHaveLength(1);
   expect(result.current.todos[0].title).toStrictEqual(title);
-  expect(result.current.todos[0].dueDate).toStrictEqual(dueDate);
+  expect(result.current.todos[0].dueDate).toStrictEqual(new Date(dueDate));
 
   if (description === undefined) {
     expect(result.current.todos[0]).not.toHaveProperty("description");
@@ -20,11 +20,11 @@ const addTodoAndVerify = ({ addArgs }: { addArgs: InputTodo }) => {
     expect(result.current.todos[0].description).toStrictEqual(description);
   }
 };
-
+const today = new Date();
 const inputTodo: InputTodo = {
   title: "領収書を郵送する",
   description: "先週の懇親会",
-  dueDate: new Date(),
+  dueDate: `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`,
 };
 
 test("初期状態の確認", () => {
