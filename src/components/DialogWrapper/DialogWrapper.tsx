@@ -42,6 +42,8 @@ const DialogWrapper = ({
       aria-labelledby="dialogTitle"
       aria-describedby="dialogDescription"
       onClick={(e) => handleClick(e)}
+      width={width}
+      maxWidth={maxWidth}
     >
       <SDialogContent>
         <SDialogHeader>
@@ -67,12 +69,15 @@ const DialogWrapper = ({
 
 export default DialogWrapper;
 
-const StyledDialog = styled.dialog`
-  cursor: pointer;
+const StyledDialog = styled.dialog<{
+  width?: string;
+  maxWidth?: string;
+}>`
   border: none;
   border-radius: 10px;
   min-width: 340px;
-  max-width: 860px;
+  width: ${({ width }) => (width ? width : "88%")};
+  max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : "860px")};
   margin: auto;
 
   &::backdrop {
@@ -114,4 +119,7 @@ const CloseButton = styled.button`
 
 const SDialogMain = styled.div``;
 
-const SDialogFooter = styled.div``;
+const SDialogFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
